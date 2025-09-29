@@ -202,10 +202,6 @@ import logging
 logging.basicConfig(level=logging.DEBUG)
 ```
 
-## 🤝 Contributing
-
-We welcome contributions! Please see our [Contributing Guidelines](CONTRIBUTING.md) for details.
-
 ### Development Setup
 
 1. Fork the repository
@@ -214,9 +210,7 @@ We welcome contributions! Please see our [Contributing Guidelines](CONTRIBUTING.
 4. Run tests: `python -m pytest`
 5. Submit a pull request
 
-## 📄 License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ## 🙏 Acknowledgments
 
@@ -224,13 +218,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - [JSONSchema](https://json-schema.org/) for data validation
 - The healthcare informatics community for inspiration and best practices
 
-## 📞 Support
 
-- 📧 **Email**: [your-email@example.com](mailto:your-email@example.com)
-- 🐛 **Issues**: [GitHub Issues](https://github.com/your-username/clinical-summarizer/issues)
-- 📖 **Documentation**: [Wiki](https://github.com/your-username/clinical-summarizer/wiki)
-
----
 
 <div align="center">
 
