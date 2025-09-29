@@ -1,150 +1,243 @@
-# Clinical Record Summarization with LLM (Gemini)
+# 🏥 Clinical Note Summarizer
 
-## Overview
-This project summarizes digitized clinical notes into **structured JSON** using the Google Gemini API.  
-Each note is processed into the following fields:
+[![Python](https://img.shields.io/badge/Python-3.8+-blue.svg)](https://www.python.org/downloads/)
+[![Gemini AI](https://img.shields.io/badge/Powered%20by-Gemini%20AI-orange.svg)](https://ai.google.dev/)
+[![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+[![Code Style](https://img.shields.io/badge/Code%20Style-Black-black.svg)](https://black.readthedocs.io/)
 
-- `Patient`
-- `Diagnosis`
-- `Treatment`
-- `Follow-up`
+> 🚀 **Transform unstructured clinical notes into structured, actionable medical summaries using Google's Gemini AI**
 
-The pipeline supports batch processing of multiple notes, validates outputs against a strict schema, and includes post-processing normalization to ensure consistency.
+An intelligent clinical documentation tool that leverages advanced AI to extract key medical information from free-text clinical notes and convert them into standardized JSON format for better data management and analysis.
+
+## ✨ Features
+
+- 🤖 **AI-Powered Summarization**: Uses Google Gemini 2.5 Flash for intelligent text processing
+- 📋 **Structured Output**: Converts notes to standardized JSON schema
+- 🔄 **Batch Processing**: Process multiple clinical notes simultaneously
+- ✅ **Data Validation**: Built-in JSON schema validation for data integrity
+- 🛡️ **Error Handling**: Robust error handling with retry mechanisms
+- 🔐 **Secure Configuration**: Environment-based API key management
+- 📊 **Processing Reports**: Detailed success/failure reporting for each file
+
+## 🏗️ Project Structure
+
+```
+clinical-summarizer/
+├── 📁 notes/                 # Input clinical notes (*.txt)
+│   ├── note1.txt
+│   └── note2.txt
+├── 📁 output/                # Generated JSON summaries
+│   ├── note1.json
+│   └── note2.json
+├── 📄 summarize_notes.py     # Main application script
+├── 📄 requirements.txt       # Python dependencies
+├── 📄 .env                   # Environment variables (API keys)
+└── 📄 README.md             # Project documentation
+```
+
+## 🚀 Quick Start
+
+### Prerequisites
+
+- Python 3.8 or higher
+- Google Gemini API key ([Get one here](https://ai.google.dev/))
+
+### Installation
+
+1. **Clone the repository**
+   ```bash
+   git clone <repository-url>
+   cd clinical-summarizer
+   ```
+
+2. **Create and activate virtual environment**
+   ```bash
+   python -m venv venv
+   source venv/bin/activate  # On Windows: venv\Scripts\activate
+   ```
+
+3. **Install dependencies**
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+4. **Configure environment variables**
+   ```bash
+   cp .env.example .env  # Create .env file
+   # Edit .env and add your Gemini API key
+   ```
+
+5. **Set up your API key**
+   
+   Edit the `.env` file:
+   ```env
+   # Gemini API Configuration
+   GEMINI_API_KEY=your_actual_gemini_api_key_here
+   ```
+
+### Usage
+
+1. **Add clinical notes**
+   
+   Place your clinical notes (`.txt` files) in the `notes/` directory:
+   ```
+   notes/
+   ├── patient_001.txt
+   ├── patient_002.txt
+   └── discharge_summary.txt
+   ```
+
+2. **Run the summarizer**
+   ```bash
+   python summarize_notes.py
+   ```
+
+3. **View results**
+   
+   Check the `output/` directory for generated JSON summaries with structured medical data.
+
+## 📋 Output Schema
+
+Each processed clinical note generates a JSON file with the following structure:
+
+```json
+{
+  "Patient": "John A. Doe, 54 yo male",
+  "Diagnosis": "ST-elevation myocardial infarction (STEMI)",
+  "Treatment": "Left heart catheterization with stent to LAD. Medications: aspirin 81 mg daily, clopidogrel 75 mg daily, atorvastatin 40 mg nightly, metoprolol tartrate 25 mg BID.",
+  "Follow-up": "Follow-up with cardiology in 2 weeks."
+}
+```
+
+### Schema Fields
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `Patient` | string | Patient identifier and basic demographics |
+| `Diagnosis` | string | Primary diagnosis or condition |
+| `Treatment` | string | Treatment plan, medications, and procedures |
+| `Follow-up` | string | Follow-up instructions and appointments |
+
+## 🔧 Configuration
+
+### Environment Variables
+
+| Variable | Description | Required |
+|----------|-------------|----------|
+| `GEMINI_API_KEY` | Your Google Gemini API key | ✅ Yes |
+
+### Model Configuration
+
+The application uses `gemini-2.5-flash` by default. You can modify the model in the `call_gemini_for_json()` function:
+
+```python
+def call_gemini_for_json(note_text, model="gemini-2.5-flash"):
+    # Function implementation
+```
+
+## 🛠️ Advanced Usage
+
+### Custom Processing Directories
+
+```python
+# Process notes from custom directories
+results = batch_process(
+    notes_dir="custom_notes", 
+    out_dir="custom_output"
+)
+```
+
+### Single File Processing
+
+```python
+# Process a single clinical note
+success, message = summarize_file(
+    "path/to/input.txt", 
+    "path/to/output.json"
+)
+```
+
+## 📊 Processing Reports
+
+The application provides detailed processing reports:
+
+```json
+{
+  "notes/patient_001.txt": {
+    "success": true,
+    "message": null
+  },
+  "notes/patient_002.txt": {
+    "success": false,
+    "message": "Validation error: 'Patient' is a required property"
+  }
+}
+```
+
+## 🐛 Troubleshooting
+
+### Common Issues
+
+**503 Service Unavailable Error**
+```
+google.genai.errors.ServerError: 503 UNAVAILABLE
+```
+- **Solution**: The Gemini API service is temporarily unavailable. Wait a few minutes and retry.
+
+**Missing API Key**
+```
+ValueError: GEMINI_API_KEY not found in environment variables
+```
+- **Solution**: Ensure your `.env` file contains a valid `GEMINI_API_KEY`.
+
+**JSON Validation Errors**
+- **Solution**: The AI response didn't match the expected schema. Check the clinical note content and retry.
+
+### Debug Mode
+
+For detailed error information, you can add logging:
+
+```python
+import logging
+logging.basicConfig(level=logging.DEBUG)
+```
+
+## 🤝 Contributing
+
+We welcome contributions! Please see our [Contributing Guidelines](CONTRIBUTING.md) for details.
+
+### Development Setup
+
+1. Fork the repository
+2. Create a feature branch: `git checkout -b feature-name`
+3. Make your changes and add tests
+4. Run tests: `python -m pytest`
+5. Submit a pull request
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 🙏 Acknowledgments
+
+- [Google Gemini AI](https://ai.google.dev/) for providing powerful language models
+- [JSONSchema](https://json-schema.org/) for data validation
+- The healthcare informatics community for inspiration and best practices
+
+## 📞 Support
+
+- 📧 **Email**: [your-email@example.com](mailto:your-email@example.com)
+- 🐛 **Issues**: [GitHub Issues](https://github.com/your-username/clinical-summarizer/issues)
+- 📖 **Documentation**: [Wiki](https://github.com/your-username/clinical-summarizer/wiki)
 
 ---
 
-## Setup Instructions
+<div align="center">
 
-### 1. Clone or create project folder
-```bash
-mkdir clinical_summarizer
-cd clinical_summarizer
-```
+**⭐ If this project helped you, please consider giving it a star! ⭐**
 
-2. Create virtual environment
-bash
-Copy code
-python3 -m venv venv
-source venv/bin/activate   # Mac/Linux
-venv\Scripts\activate      # Windows (PowerShell)
-3. Install dependencies
-bash
-Copy code
-pip install -r requirements.txt
-Create a requirements.txt file with:
+Made with ❤️ for healthcare professionals and developers
 
-Copy code
-google-genai
-python-dotenv
-jsonschema
-4. Configure API key
-Option 1: Local .env file (recommended)
-Create a .env file in the project root:
+[🔝 Back to top](#-clinical-note-summarizer)
 
-ini
-Copy code
-GEMINI_API_KEY=your_real_api_key_here
-Important: Do not commit your .env file. Add .env to .gitignore.
-
-Option 2: Environment variable
-You can also set the API key in the terminal:
-
-bash
-Copy code
-export GEMINI_API_KEY="your_real_api_key_here"   # Mac/Linux
-setx GEMINI_API_KEY "your_real_api_key_here"     # Windows
-Example placeholder file
-Create .env.example in the repo with:
-
-ini
-Copy code
-GEMINI_API_KEY=your_api_key_here
-This shows the format for anyone cloning the repo. The user should copy it to .env and fill in their key:
-
-bash
-Copy code
-cp .env.example .env
-5. Prepare input notes
-Create a folder notes/ and add .txt files.
-
-Sample notes for testing:
-
-notes/note1.txt
-
-vbnet
-Copy code
-Patient: John Doe, 45-year-old male
-History: Complains of persistent headaches and dizziness. 
-BP: 160/95 on two separate readings.
-Plan: Start Lisinopril 10mg daily. Counsel on diet and exercise. 
-Follow-up in 2 weeks for BP check.
-notes/note2.txt
-
-vbnet
-Copy code
-Patient: Maria Lopez, 30-year-old female
-History: Presents with fever, sore throat, and fatigue. Rapid strep test positive.
-Plan: Prescribed Amoxicillin 500mg TID for 10 days. Advise hydration and rest.
-Follow-up in 5 days if symptoms persist or worsen.
-notes/note3.txt
-
-vbnet
-Copy code
-Patient: Raj Sharma, 62-year-old male
-History: History of Type 2 Diabetes. Today with foot ulcer, mild swelling.
-Plan: Clean ulcer, start antibiotics (Cefalexin 500mg QID). Refer to podiatry.
-Follow-up in 7 days to assess healing.
-notes/note4.txt
-
-makefile
-Copy code
-Patient: Sarah Mitchell, 25-year-old female
-History: Reports anxiety, insomnia, and poor concentration for 3 months.
-Plan: Begin CBT referral, consider SSRI (Escitalopram 10mg daily).
-Follow-up in 4 weeks for mental health review.
-notes/note5.txt
-
-vbnet
-Copy code
-Patient: Ahmed Khan, 70-year-old male
-History: Recent hospital discharge after pneumonia. Now stable, oxygen saturation 97% on room air.
-Plan: Continue oral antibiotics (Levofloxacin 500mg OD for 5 days). Encourage breathing exercises.
-Follow-up in 1 week with chest X-ray.
-6. Run the script
-bash
-Copy code
-python summarize_notes.py
-The script will batch process all notes in the notes/ folder.
-
-JSON outputs are saved to output/ folder.
-
-Example JSON output:
-
-json
-Copy code
-{
-  "Patient": "John Doe, 45-year-old male",
-  "Diagnosis": "Hypertension",
-  "Treatment": "Start Lisinopril 10mg daily; counsel on diet and exercise",
-  "Follow-up": "2 weeks for BP check"
-}
-Deliverables
-summarize_notes.py → Main script
-
-notes/ → Input folder with .txt notes
-
-output/ → Folder with structured .json summaries
-
-.env.example → Example API key file
-
-README.md → Setup and run guide
-
-Example .json outputs
-
-Notes for Interviewers
-The pipeline currently processes digitized .txt notes.
-
-It can be extended to handle PDFs or images by adding OCR (e.g., AWS Textract, Tesseract).
-
-Ensure .env exists and contains a valid GEMINI_API_KEY.
-
+</div>
