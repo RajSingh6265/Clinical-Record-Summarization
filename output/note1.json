@@ -1,0 +1,6 @@
+{
+  "Patient": "John A. Doe, 54 year-old male",
+  "Diagnosis": "ST-elevation myocardial infarction (STEMI)",
+  "Treatment": "Left heart catheterization with stent to LAD; Medications on discharge: aspirin 81 mg daily, clopidogrel 75 mg daily, atorvastatin 40 mg nightly, metoprolol tartrate 25 mg BID",
+  "Follow-up": "Cardiology in 2 weeks"
+}

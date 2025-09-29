@@ -1,0 +1,1 @@
+Discharge summary: John A. Doe, 54 yo male, admitted for chest pain on 2025-09-14. ECG showed ST-elevation in V2-V4. Troponin elevated. Left heart catheterization performed with stent to LAD. Medications on discharge: aspirin 81 mg daily, clopidogrel 75 mg daily, atorvastatin 40 mg nightly, metoprolol tartrate 25 mg BID. Follow-up with cardiology in 2 weeks.
